@@ -68,18 +68,35 @@ ggplot(salamander_annual, aes(x=year, y=n, group=section, color=section)) +
 ```
 **Figure 1** Annual counts of Pacific giant salamanders observed in the old growth and clear cut section of Mack Creek, 1993 - 2017. While salamander counts in old growth sections have generally been slightly greater over time, trends in populations in both sections appear to be closely related. Salamander counts in the clear cut section were greater than counts in the old growth section beginning in 2015. 
 
+**Table 1** Counts and proportions of Pacific giant salamanders observed in 2017. Counts are categorized by channel classification (pool, cascade or side channel) and stream section (clear cut or old growth).
 ```{r}
 
 # Results B - Table of 2017 salamander counts by channel classification (pool, cascades and side-channel) in old growth (OG) and clear cut (CC) sections of Mack Creek.
 
-# Remove isolated pools, reclassify channel types as pool, cascade, side-channel. SC/side channel = side_channel, P/pool = pool, C/cascade,I/riffle,C/cascade,S/small step = cascade.
+# Remove isolated pools, filter for 2017 observations, reclassify channel types as pool, cascade, side-channel. SC/side channel = side_channel, P/pool = pool, C/cascade,I/riffle,C/cascade,S/small step = cascade.
 
-salamander_channel <- mack_salamander %>% 
+salamander_channel_type <- mack_salamander %>%
+  filter(year == "2017") %>% 
   filter(!unittype == "IP") %>% 
   mutate(channel_type = ifelse(unittype == "SC", "side_channel", ifelse(unittype == "P", "pool", ifelse(unittype %in% c("C", "I", "R", "S"), "cascade", ""))))
-          
 
+channel_type_counts <- salamander_channel_type %>% 
+  count(section, channel_type)
 
+channel_count_table <- channel_type_counts %>% 
+    pivot_wider(names_from = section, values_from = n)
 
+channel_count_props <- channel_count_table %>% 
+  adorn_percentages(denominator = "row") %>% 
+  adorn_pct_formatting(digits = 1) %>% 
+  adorn_ns(position = "front")
+
+kable(channel_count_props,
+      col.names = c("Channel Type", 
+                     "Clear Cut", 
+                     "Old Growth")) %>% 
+  kable_styling()
+
+channel_count_props
 ```
 
