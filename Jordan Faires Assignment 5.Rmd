@@ -72,11 +72,13 @@ ggplot(salamander_annual, aes(x=year, y=n, group=section, color=section)) +
 
 # Results B - Table of 2017 salamander counts by channel classification (pool, cascades and side-channel) in old growth (OG) and clear cut (CC) sections of Mack Creek.
 
-# Remove isolated pools, reclassify channel types as pool, cascade, side-channel. 
+# Remove isolated pools, reclassify channel types as pool, cascade, side-channel. SC/side channel = side_channel, P/pool = pool, C/cascade,I/riffle,C/cascade,S/small step = cascade.
 
 salamander_channel <- mack_salamander %>% 
   filter(!unittype == "IP") %>% 
-  mutate(channel_type = ifelse(unittype))
+  mutate(channel_type = ifelse(unittype == "SC", "side_channel", ifelse(unittype == "P", "pool", ifelse(unittype %in% c("C", "I", "R", "S"), "cascade", ""))))
+          
+
 
 
 ```
