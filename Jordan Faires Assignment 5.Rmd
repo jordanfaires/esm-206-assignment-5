@@ -1,0 +1,78 @@
+---
+title: "Assignment 5"
+author: "Jordan Faires"
+date: "11/28/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+
+# Introduction
+
+# Data and Methods
+
+```{r}
+
+# Load packages
+
+library(tidyverse)
+library(car)
+library(janitor)
+library(kableExtra)
+library(ggbeeswarm)
+
+# Read in data, filter for Pacific giant salamanders (species code “DITE”)
+
+mack_vertebrates <- read_csv("mack_creek_vertebrates.csv") %>% 
+  clean_names()
+
+mack_salamander <- mack_vertebrates %>% 
+  filter(species == "DITE")
+
+```
+
+```{r}
+
+# Results A - Visually comparing annual salamander counts in old growth (OG) and clear cut (CC) sections of Mack Creek
+
+# Summarize by year, find counts 
+
+salamander_annual <- mack_salamander %>% 
+  count(year, section) %>% 
+  group_by(section)
+
+# Graph trends over time
+
+ggplot(salamander_annual, aes(x=year, y=n, group=section, color=section)) +
+  geom_line() +
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.background = element_rect(fill = "gray99", size = .1)) +
+  scale_y_continuous(expand = c(0,0)) +
+  labs(x = "",
+       y = "Annual Count",
+       title = "Annual Count of Pacific Giant Salamanders, 1993-2017") +
+    scale_color_discrete(breaks=c("CC", 
+                                  "OG"),
+                       labels=c("Clear Cut", 
+                                "Old Growth"),
+                       name = "Stream Section") +
+  theme(legend.position = c(0.18, 0.72))
+
+
+
+```
+*Figure 1* Annual counts of Pacific giant salamanders observed in the old growth and clear cut section of Mack Creek, 1993 - 2017. While salamander counts in old growth sections have generally been slightly greater over time, trends in populations in both sections appear to be closely related. Salamander counts in the clear cut section were greater than counts in the old growth section beginning in 2015. 
+
+```{r}
+
+# Results B - Table of 2017 salamander counts by channel classification (pool, cascades and side-channel) in old growth (OG) and clear cut (CC) sections of Mack Creek.
+
+
+
+```
+
