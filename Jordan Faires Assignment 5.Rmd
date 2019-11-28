@@ -66,12 +66,17 @@ ggplot(salamander_annual, aes(x=year, y=n, group=section, color=section)) +
 
 
 ```
-*Figure 1* Annual counts of Pacific giant salamanders observed in the old growth and clear cut section of Mack Creek, 1993 - 2017. While salamander counts in old growth sections have generally been slightly greater over time, trends in populations in both sections appear to be closely related. Salamander counts in the clear cut section were greater than counts in the old growth section beginning in 2015. 
+**Figure 1** Annual counts of Pacific giant salamanders observed in the old growth and clear cut section of Mack Creek, 1993 - 2017. While salamander counts in old growth sections have generally been slightly greater over time, trends in populations in both sections appear to be closely related. Salamander counts in the clear cut section were greater than counts in the old growth section beginning in 2015. 
 
 ```{r}
 
 # Results B - Table of 2017 salamander counts by channel classification (pool, cascades and side-channel) in old growth (OG) and clear cut (CC) sections of Mack Creek.
 
+# Remove isolated pools, reclassify channel types as pool, cascade, side-channel. 
+
+salamander_channel <- mack_salamander %>% 
+  filter(!unittype == "IP") %>% 
+  mutate(channel_type = ifelse(unittype))
 
 
 ```
