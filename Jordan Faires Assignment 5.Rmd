@@ -99,4 +99,23 @@ kable(channel_count_props,
 
 channel_count_props
 ```
+```{r}
+# Results C: Using the 2017 counts found in Results B above, answer: is there a significant difference in where in the channel Pacific giant salamanders are located (pool, cascade or side channel) between the two sections (old growth and clear cut)? 
 
+
+chi_counts <- channel_count_table %>% 
+  select(-channel_type)
+
+chi_test <- chisq.test(chi_counts)
+chi_test
+
+```
+
+The location of Pacific giant salamanders in the channel varies based on the section of stream. Pacific giant salamanders are found slightly more in cascades in clear cut forests ()
+
+However, there is a not significant effect of the section of stream on where Pacific giant salamanders are located (pool, cascade or side chnnel) ($\chi$^2^(`r chi_test$parameter`) = `r round(chi_test$statistic,2)`, *p* = `r round(chi_test$p.value, 2)`). 
+
+
+
+
+$\chi^2$
