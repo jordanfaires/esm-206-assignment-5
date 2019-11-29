@@ -111,11 +111,22 @@ chi_test
 
 ```
 
-The location of Pacific giant salamanders in the channel varies based on the section of stream. Pacific giant salamanders are found slightly more in cascades in clear cut forests ()
-
-However, there is a not significant effect of the section of stream on where Pacific giant salamanders are located (pool, cascade or side chnnel) ($\chi$^2^(`r chi_test$parameter`) = `r round(chi_test$statistic,2)`, *p* = `r round(chi_test$p.value, 2)`). 
+In 2017, the location of Pacific giant salamanders in the channel varied slightly based on the section of stream. Pacific giant salamanders are found slightly more in cascades in clear cut forests (n = 247, 55.1% ) than in old growth forests (n = 201, 44.9%), slightly less in pools in clear cut forests (n = 31, 40.8%) than in clear cut forests (n = 45, 59.2%), and more in side channels in clear cut forests (n = 90, 54.9%) than in old growth forests (n = 47, 45.1%). However, there is a not significant effect of the section of stream on where Pacific giant salamanders are located (pool, cascade or side chnnel) by a Chi-square test ($\chi$^2^(`r chi_test$parameter`) = `r round(chi_test$statistic,2)`, *p* = `r round(chi_test$p.value, 2)`). 
 
 
+```{r}
 
+# Results D. Compare weights of Pacific giant salamanders in clear cut and old growth forest sections of the creek in 2017. 
 
-$\chi^2$
+salamander_2017_og <- salamander_channel_type %>% 
+  filter(section == "OG")
+
+salamander_2017_cc <- salamander_channel_type %>% 
+  filter(section == "CC")
+
+weight_ttest <- t.test(salamander_2017_og$weight, salamander_2017_cc$weight)
+weight_ttest
+
+```
+
+However, mean salamander weight observed in old growth sections (`r round(weight_ttest$estimate[1],2)`) and clear cut sections (`r round(weight_ttest$estimate[2],2)`) is not significantly different (t(`r round(weight_ttest$parameter,2)`) = `r round(weight_ttest$statistic,2)`, *p* = `r round (weight_ttest$p.value,2)`)
