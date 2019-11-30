@@ -52,7 +52,7 @@ ggplot(salamander_annual, aes(x=year, y=n, group=section, color=section)) +
   theme(panel.grid.minor = element_blank(),
         panel.grid.major = element_blank(),
         panel.background = element_rect(fill = "gray99", size = .1)) +
-  scale_y_continuous(expand = c(0,0)) +
+  scale_y_continuous(expand = c(0,10)) +
   labs(x = "",
        y = "Annual Count",
        title = "Annual Count of Pacific Giant Salamanders, 1993-2017") +
@@ -102,7 +102,6 @@ channel_count_props
 ```{r}
 # Results C: Using the 2017 counts found in Results B above, answer: is there a significant difference in where in the channel Pacific giant salamanders are located (pool, cascade or side channel) between the two sections (old growth and clear cut)? 
 
-
 chi_counts <- channel_count_table %>% 
   select(-channel_type)
 
@@ -118,6 +117,22 @@ In 2017, the location of Pacific giant salamanders in the channel varied slightl
 
 # Results D. Compare weights of Pacific giant salamanders in clear cut and old growth forest sections of the creek in 2017. 
 
+
+# Look at data 
+
+ggplot(data = salamander_channel_type, aes(x = weight)) +
+  geom_histogram()
+
+  facet_wrap(~section)
+
+# Look at a QQ plot to check for normality
+
+ggplot(data = penguin_f, aes(sample = flipper_length_mm)) +
+  geom_qq() +
+  facet_wrap(~species)
+
+
+
 salamander_2017_og <- salamander_channel_type %>% 
   filter(section == "OG")
 
@@ -129,4 +144,47 @@ weight_ttest
 
 ```
 
-However, mean salamander weight observed in old growth sections (`r round(weight_ttest$estimate[1],2)`) and clear cut sections (`r round(weight_ttest$estimate[2],2)`) is not significantly different (t(`r round(weight_ttest$parameter,2)`) = `r round(weight_ttest$statistic,2)`, *p* = `r round (weight_ttest$p.value,2)`)
+However, mean salamander weight observed in old growth sections (`r round(weight_ttest$estimate[1],2)`) and clear cut sections (`r round(weight_ttest$estimate[2],2)`) is not significantly different (t(`r round(weight_ttest$parameter,2)`) = `r round(weight_ttest$statistic,2)`, *p* = `r round (weight_ttest$p.value,2)`).
+
+```{r}
+
+# Results E. Compare weights of Pacific giant salamanders in pools, cascades and side-channels of Mack Creek in 2017. 
+
+# First, visually compare Pacific giant salamander weights between the three channel classifications.
+
+# Make summary table 
+penguin_f_summary <- penguin_f %>% 
+  group_by(species) %>% 
+  summarize(
+    mean_flipper_length = mean(flipper_length_mm),
+    sd_flipper_length = sd(flipper_length_mm),
+    sample_size = n(),
+    se_flipper_length = sd(flipper_length_mm) / sqrt(n()),
+    var_flipper_length = var(flipper_length_mm)
+
+salamander_channel_type <- 
+  
+  
+  ggplot() +
+  geom_beeswarm(data = penguin_f,
+                aes(x = species,
+                    y = flipper_length_mm),
+                size = 1,
+                alpha = .6,
+                color = "gray60") +
+  scale_x_discrete(labels = c("Adelie", "Chinstrap", "Gentoo")) +
+  geom_point(data = penguin_f_summary, aes(x = species, y = mean_flipper_length),
+             color = "red",
+             size = 2) +
+  geom_errorbar(data = penguin_f_summary,
+                aes(x = species,
+                    ymin = mean_flipper_length - sd_flipper_length,
+                    ymax = mean_flipper_length + sd_flipper_length),
+                width = .1,
+                color = "red") +
+  theme_bw()
+  
+  
+
+```
+
