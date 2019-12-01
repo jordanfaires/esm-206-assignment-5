@@ -97,7 +97,6 @@ kable(channel_count_props,
                      "Old Growth")) %>% 
   kable_styling()
 
-channel_count_props
 ```
 ```{r}
 # Results C: Using the 2017 counts found in Results B above, answer: is there a significant difference in where in the channel Pacific giant salamanders are located (pool, cascade or side channel) between the two sections (old growth and clear cut)? 
@@ -106,32 +105,53 @@ chi_counts <- channel_count_table %>%
   select(-channel_type)
 
 chi_test <- chisq.test(chi_counts)
-chi_test
 
 ```
 
 In 2017, the location of Pacific giant salamanders in the channel varied slightly based on the section of stream. Pacific giant salamanders are found slightly more in cascades in clear cut forests (n = 247, 55.1% ) than in old growth forests (n = 201, 44.9%), slightly less in pools in clear cut forests (n = 31, 40.8%) than in clear cut forests (n = 45, 59.2%), and more in side channels in clear cut forests (n = 90, 54.9%) than in old growth forests (n = 47, 45.1%). However, there is a not significant effect of the section of stream on where Pacific giant salamanders are located (pool, cascade or side chnnel) by a Chi-square test ($\chi$^2^(`r chi_test$parameter`) = `r round(chi_test$statistic,2)`, *p* = `r round(chi_test$p.value, 2)`). 
 
 
-```{r}
+```{r, include = FALSE}
 
 # Results D. Compare weights of Pacific giant salamanders in clear cut and old growth forest sections of the creek in 2017. 
 
-
 # Look at data 
 
-ggplot(data = salamander_channel_type, aes(x = weight)) +
-  geom_histogram()
+# Histogram 
 
+ggplot(data = salamander_channel_type, aes(x = weight)) +
+  geom_histogram() +
   facet_wrap(~section)
 
 # Look at a QQ plot to check for normality
 
-ggplot(data = penguin_f, aes(sample = flipper_length_mm)) +
+ggplot(data = salamander_channel_type, aes(sample = weight)) +
   geom_qq() +
-  facet_wrap(~species)
+  facet_wrap(~section)
 
+# Data are very skewed - probably not normal. 
 
+# Make a table of summary stats
+
+salamander_weight_summary <- salamander_channel_type %>% 
+  group_by(channel_type) %>% 
+  summarize(
+    mean_weight = mean(weight, na.rm = TRUE),
+    sd_weight = sd(weight, na.rm = TRUE),
+    sample_size = n(),
+    se_weight = sd(weight, na.rm = TRUE) / sqrt(n()),
+    var_weight = var(weight, na.rm = TRUE),
+    median_weight = median(weight, na.rm = TRUE))
+
+# Means very different from medians. Seems like outliers having a large effect on means. 
+
+# Check variances 
+
+leveneTest(weight~ channel_type, data = salamander_channel_type)
+
+# Levene Test p = .09 - variances equal.
+
+# Do a t test
 
 salamander_2017_og <- salamander_channel_type %>% 
   filter(section == "OG")
@@ -140,11 +160,11 @@ salamander_2017_cc <- salamander_channel_type %>%
   filter(section == "CC")
 
 weight_ttest <- t.test(salamander_2017_og$weight, salamander_2017_cc$weight)
-weight_ttest
+
 
 ```
 
-However, mean salamander weight observed in old growth sections (`r round(weight_ttest$estimate[1],2)`) and clear cut sections (`r round(weight_ttest$estimate[2],2)`) is not significantly different (t(`r round(weight_ttest$parameter,2)`) = `r round(weight_ttest$statistic,2)`, *p* = `r round (weight_ttest$p.value,2)`).
+Mean salamander weight observed in old growth sections (`r round(weight_ttest$estimate[1],2)`) and clear cut sections (`r round(weight_ttest$estimate[2],2)`) is also not significantly different (t(`r round(weight_ttest$parameter,2)`) = `r round(weight_ttest$statistic,2)`, *p* = `r round (weight_ttest$p.value,2)`).
 
 ```{r}
 
@@ -152,39 +172,60 @@ However, mean salamander weight observed in old growth sections (`r round(weight
 
 # First, visually compare Pacific giant salamander weights between the three channel classifications.
 
-# Make summary table 
-penguin_f_summary <- penguin_f %>% 
-  group_by(species) %>% 
-  summarize(
-    mean_flipper_length = mean(flipper_length_mm),
-    sd_flipper_length = sd(flipper_length_mm),
-    sample_size = n(),
-    se_flipper_length = sd(flipper_length_mm) / sqrt(n()),
-    var_flipper_length = var(flipper_length_mm)
-
-salamander_channel_type <- 
-  
-  
   ggplot() +
-  geom_beeswarm(data = penguin_f,
-                aes(x = species,
-                    y = flipper_length_mm),
+  geom_beeswarm(data = salamander_channel_type,
+                aes(x = channel_type,
+                    y = weight),
                 size = 1,
                 alpha = .6,
                 color = "gray60") +
-  scale_x_discrete(labels = c("Adelie", "Chinstrap", "Gentoo")) +
-  geom_point(data = penguin_f_summary, aes(x = species, y = mean_flipper_length),
+  scale_x_discrete(labels = c("Cascade", "Pool", "Side Channel")) +
+  geom_point(data = salamander_weight_summary, aes(x = channel_type, y = mean_weight),
              color = "red",
              size = 2) +
-  geom_errorbar(data = penguin_f_summary,
-                aes(x = species,
-                    ymin = mean_flipper_length - sd_flipper_length,
-                    ymax = mean_flipper_length + sd_flipper_length),
+  geom_errorbar(data = salamander_weight_summary,
+                aes(x = channel_type,
+                    ymin = mean_weight - sd_weight,
+                    ymax = mean_weight + sd_weight),
                 width = .1,
                 color = "red") +
-  theme_bw()
+  theme_minimal() + 
+  labs(x = "Channel Type",
+       y = "Weight (Grams)",
+       title = "Weight of Pacific Giant Salamanders in Mack Creek By Channel Type, 2017")
   
   
 
 ```
+**Figure 2** Weight of observed Pacific giant salamanders by channel type (cascade, pool or side channel) in 2017. Gray points indicate individual observations, red dots indicate group means, and error bars indicate $\pm$ standard deviation. 
+
+```{r}
+
+# Results E 
+
+# Second, answer: Is there a significant difference in mean weights for Pacific giant salamanders observed in pools vs. cascades vs. side-channels in 2017? 
+
+# Run a one way ANOVA
+
+weight_aov <- aov(weight ~ channel_type, data = salamander_channel_type)
+summary(weight_aov)
+
+# At least one different 
+
+# Tukey Post-Hoc
+
+weight_post_hoc <- TukeyHSD(weight_aov)
+weight_post_hoc
+
+# Weight only different in side channel & pools. Pools/cascades and side channel/pools not significantly different. 
+
+aov_outputs <- unlist(summary(weight_aov))
+
+# The first item [1] is the numerator degrees of freedom; 
+# The second item [2] is the denominator degrees of freedom; 
+# The seventh item [7] is the F-statistic value;
+# The ninth item [9] is the p-value
+
+```
+
 
