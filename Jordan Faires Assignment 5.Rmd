@@ -24,6 +24,7 @@ library(kableExtra)
 library(ggbeeswarm)
 library(RColorBrewer)
 library(broom)
+library(viridis)
 
 # Read in data, filter for Pacific giant salamanders (species code “DITE”)
 
@@ -56,7 +57,6 @@ ggplot(salamander_annual, aes(x=year, y=n, group=section, color=section)) +
         panel.grid.major = element_blank(),
         panel.background = element_rect(fill = "gray99", size = .1)) +
   scale_y_continuous(expand = c(0,10)) +
-  
   labs(x = "",
        y = "Annual Count",
        title = "Annual Count of Pacific Giant Salamanders, 1993-2017") +
@@ -65,12 +65,12 @@ ggplot(salamander_annual, aes(x=year, y=n, group=section, color=section)) +
                        labels=c("Clear Cut", 
                                 "Old Growth"),
                        name = "Stream Section") +
-  theme(legend.position = c(0.18, 0.72))
+  theme(legend.position = c(0.18, 0.72)) 
 
 
 
 ```
-**Figure 1** Annual counts of Pacific giant salamanders observed in the old growth and clear cut section of Mack Creek, 1993 - 2017. While salamander counts in old growth sections have generally been slightly greater over time, trends in populations in both sections appear to be closely related. Salamander counts in the clear cut section were greater than counts in the old growth section beginning in 2015. 
+**Figure 1** Annual counts of Pacific giant salamanders observed in the old growth and clear cut section of Mack Creek, 1993 - 2017. While salamander counts in old growth sections have generally been slightly greater over time, trends in populations in both sections appear to be similar. Salamander counts in the clear cut section were greater than counts in the old growth section beginning in 2015. 
 
 **Table 1** Counts and proportions of Pacific giant salamanders observed in 2017. Counts are categorized by channel classification (pool, cascade or side channel) and stream section (clear cut or old growth).
 ```{r}
@@ -93,7 +93,8 @@ channel_count_table <- channel_type_counts %>%
 channel_count_props <- channel_count_table %>% 
   adorn_percentages(denominator = "row") %>% 
   adorn_pct_formatting(digits = 1) %>% 
-  adorn_ns(position = "front")
+  adorn_ns(position = "front") %>% 
+  mutate(channel_type = c("Cascade", "Pool", "Side Channel"))
 
 kable(channel_count_props,
       col.names = c("Channel Type", 
@@ -236,7 +237,6 @@ aov_outputs <- unlist(summary(weight_aov))
 Mean weight (g) of Pacific giant salamanders observed in side channels differed significantly from the mean weight of salamanders observed in pools (one-way ANOVA with post-hoc Tukey's HSD, F(`r aov_outputs[1]`, `r aov_outputs[2]`) = `r round(aov_outputs[7],2)`, *p* = `r round(aov_outputs[9],3)` ). There were no statistical differences between all other pairings. Mean weight of salamanders observed in pools (`r round(salamander_weight_summary$mean_weight[2],2)` g) is `r round(((salamander_weight_summary$mean_weight[2] - salamander_weight_summary$mean_weight[3]) / salamander_weight_summary$mean_weight[3]) * 100, 2)`% greater than the mean weight of salamanders found in side channels (`r round(salamander_weight_summary$mean_weight[3],2)` g). 
 
 While comparing the mean weight of Pacific giant salamander is useful, there are some concerns about the data that suggest that medians may be a more useful measure of comparison. For one, the data have a heavy positive skew and are potentially non-normal. Outliers may also be heavily influencing the mean. (For instance, the mean weight of salamders found in pools is `r round(salamander_weight_summary$mean_weight[2],2)` g, while the median weight is `r round(salamander_weight_summary$median_weight[2],2)` g.) A Levene's test indicates that the variances are equal, and ANOVAs are relatively resilient to violations of normality, so comparing means could wbe appropriate. However, given this non-normal data, a non-parametric rank based test that compares medians (such as Kruskal-Wallis) may be more approprirate for use.
-
 
 
 # Summary
