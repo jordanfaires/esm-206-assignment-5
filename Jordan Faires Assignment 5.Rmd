@@ -11,7 +11,22 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 # Introduction
 
+![](https://upload.wikimedia.org/wikipedia/commons/1/19/Dicamptodon_tenebrosus_2.JPG)
+***Figure 1*** *Dicamptodon tenebrosus*, Pacific giant salamander Credit: Jeffrey Marsten, [Wikipedia](https://en.wikipedia.org/wiki/Pacific_giant_salamander#/media/File:Dicamptodon_tenebrosus_2.JPG)
+
 # Data and Methods
+
+Data for Pacific giant salamander counts and weight in Mack Creek (Andrews Experimental Forest, Oregon) was gathered by the Andrews Forest LTER Site. Data gathering for West Slope cutthroat trout (*Onchorhyncus clarki clarki*) began in 1987, while data have been gathered for Pacific giant salamander since 1993. Data is gathered in two reaches of Mack Creek: one being a section of clearcut forest (cleared in 1963) and a section of 500-year old old growth forest. 
+
+![](https://i.imgur.com/s5G4wTh.png)
+
+***Figure 2*** Map of the Mack Creek study area within Andrews Experimental Forest. Light green shading indicates a previous forest disturbance (the 1963 clearcut) while the red outline against the blue indicates the control section of Mack Creek. Credit: [Andrews Experimental Forest LTER](https://osugisci.maps.arcgis.com/apps/webappviewer/index.html?id=235331346380421f88fe810dc87a0103)
+
+In this report, Pacific giant salamander counts and weight are compared against the section of stream (clear cut or old growth) where salamanders were observed, as well as the type of stream channel (cascade, pool or side channel.) Counts and proportions of salamanders in 2017 by stream section were compared to counts and proportions by channel type using a chi-squared test ($\alpha$ = 0.05). Mean weight of salamanders was compared by channel type using a one-way ANOVA with a post-hoc Tukey's HSD test ($\alpha$ = 0.05).
+
+Analyses and figures were prepared using R software version 3.6.1. 
+
+
 
 ```{r}
 
@@ -70,9 +85,9 @@ ggplot(salamander_annual, aes(x=year, y=n, group=section, color=section)) +
 
 
 ```
-**Figure 1** Annual counts of Pacific giant salamanders observed in the old growth and clear cut section of Mack Creek, 1993 - 2017. While salamander counts in old growth sections have generally been slightly greater over time, trends in populations in both sections appear to be similar. Salamander counts in the clear cut section were greater than counts in the old growth section beginning in 2015. 
+***Figure 3.*** Annual counts of Pacific giant salamanders observed in the old growth and clear cut section of Mack Creek, 1993 - 2017. While salamander counts in old growth sections have generally been slightly greater over time, trends in populations in both sections appear to be similar. Salamander counts in the clear cut section were greater than counts in the old growth section beginning in 2015. 
 
-**Table 1** Counts and proportions of Pacific giant salamanders observed in 2017. Counts are categorized by channel classification (pool, cascade or side channel) and stream section (clear cut or old growth).
+**Table 1.** Counts and proportions of Pacific giant salamanders observed in 2017. Counts are categorized by channel classification (pool, cascade or side channel) and stream section (clear cut or old growth).
 ```{r}
 
 # Results B - Table of 2017 salamander counts by channel classification (pool, cascades and side-channel) in old growth (OG) and clear cut (CC) sections of Mack Creek.
@@ -204,7 +219,7 @@ Mean salamander weight observed in old growth sections (`r round(weight_ttest$es
 
 ```
 
-**Figure 2.** Weight of observed Pacific giant salamanders by channel type (cascade, pool or side channel) in 2017. Gray points indicate individual observations, red dots indicate group means, and error bars indicate $\pm$ standard deviation. 
+***Figure 4.*** Weight of observed Pacific giant salamanders by channel type (cascade, pool or side channel) in 2017. Gray points indicate individual observations, red dots indicate group means, and error bars indicate $\pm$ standard deviation. 
 
 ```{r, include = FALSE}
 
@@ -237,8 +252,9 @@ aov_outputs <- unlist(summary(weight_aov))
 
 Mean weight (g) of Pacific giant salamanders observed in side channels differed significantly from the mean weight of salamanders observed in pools (one-way ANOVA with post-hoc Tukey's HSD, F(`r aov_outputs[1]`, `r aov_outputs[2]`) = `r round(aov_outputs[7],2)`, *p* = `r round(aov_outputs[9],3)` ). There were no statistical differences between all other pairings. Mean weight of salamanders observed in pools (`r round(salamander_weight_summary$mean_weight[2],2)` g) is `r round(((salamander_weight_summary$mean_weight[2] - salamander_weight_summary$mean_weight[3]) / salamander_weight_summary$mean_weight[3]) * 100, 2)`% greater than the mean weight of salamanders found in side channels (`r round(salamander_weight_summary$mean_weight[3],2)` g). 
 
-While comparing the mean weight of Pacific giant salamander is useful, there are some concerns about the data that suggest that medians may be a more useful measure of comparison. For one, the data have a heavy positive skew and are potentially non-normal. Outliers may also be heavily influencing the mean. (For instance, the mean weight of salamders found in pools is `r round(salamander_weight_summary$mean_weight[2],2)` g, while the median weight is `r round(salamander_weight_summary$median_weight[2],2)` g.) A Levene's test indicates that the variances are equal, and ANOVAs are relatively resilient to violations of normality, so comparing means could wbe appropriate. However, given this non-normal data, a non-parametric rank based test that compares medians (such as Kruskal-Wallis) may be more approprirate for use.
-
+While comparing the mean weight of Pacific giant salamander is useful, there are some reasons why medians may be a more useful measure of comparison. For one, the data have a heavy positive skew and are potentially non-normal. Outliers may also be heavily influencing the mean. For example, the mean weight of salamders found in pools is `r round(salamander_weight_summary$mean_weight[2],2)` g, while the median weight is `r round(salamander_weight_summary$median_weight[2],2)` g. A Levene's test indicates that the variances are equal, and ANOVAs are relatively resilient to violations of normality, so comparing means is not necessarily wrong in this situation. However, given this non-normal data, a non-parametric rank based test that compares medians (such as Kruskal-Wallis) may be more approprirate for use.
 
 # Summary
 
+ - Pacifc giant salamander populations in both clear cut and old growth forests have increased since data gathering began in 1993, with populations in the clear cut forest section seeming to recover over time. 
+- There is no statistical effect of stream section on where salamanders are found (pool, cascade or side channel.)
