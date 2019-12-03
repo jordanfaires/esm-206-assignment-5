@@ -59,7 +59,7 @@ ggplot(salamander_annual, aes(x=year, y=n, group=section, color=section)) +
   scale_y_continuous(expand = c(0,10)) +
   labs(x = "",
        y = "Annual Count",
-       title = "Annual Count of Pacific Giant Salamanders, 1993-2017") +
+       title = "Annual Count of Pacific Giant Salamander, 1993-2017") +
     scale_color_discrete(breaks=c("CC", 
                                   "OG"),
                        labels=c("Clear Cut", 
@@ -113,7 +113,7 @@ chi_test <- chisq.test(chi_counts)
 
 ```
 
-In 2017, the location of Pacific giant salamanders in the channel varied slightly based on the section of stream. Pacific giant salamanders are found slightly more in cascades in clear cut forests (n = 247, 55.1% ) than in old growth forests (n = 201, 44.9%), slightly less in pools in clear cut forests (n = 31, 40.8%) than in clear cut forests (n = 45, 59.2%), and more in side channels in clear cut forests (n = 90, 54.9%) than in old growth forests (n = 47, 45.1%). However, there is a not significant effect of the section of stream on where Pacific giant salamanders are located (pool, cascade or side chnnel) by a Chi-square test ($\chi$^2^(`r chi_test$parameter`) = `r round(chi_test$statistic,2)`, *p* = `r round(chi_test$p.value, 2)`). 
+In 2017, the location of Pacific giant salamanders in the channel varied slightly based on the section of stream. Pacific giant salamanders are found slightly more in cascades in clear cut forests (n = `r channel_count_table$CC[1]`, 55.1% ) than in old growth forests (n = `r channel_count_table$OG[1]`, 44.9%), slightly less in pools in clear cut forests (n = `r channel_count_table$CC[2]`, 40.8%) than in old growth forests (n = `r channel_count_table$OG[2]`, 59.2%), and more in side channels in clear cut forests (n = `r channel_count_table$CC[3]`, 54.9%) than in old growth forests (n = `r channel_count_table$OG[3]`, 45.1%). However, there is a not significant effect of the section of stream on where Pacific giant salamanders are located (pool, cascade or side chnnel) by a Chi-square test ($\chi$^2^(`r chi_test$parameter`) = `r round(chi_test$statistic,2)`, *p* = `r round(chi_test$p.value, 2)`). 
 
 
 ```{r, include = FALSE}
@@ -203,6 +203,7 @@ Mean salamander weight observed in old growth sections (`r round(weight_ttest$es
   
 
 ```
+
 **Figure 2.** Weight of observed Pacific giant salamanders by channel type (cascade, pool or side channel) in 2017. Gray points indicate individual observations, red dots indicate group means, and error bars indicate $\pm$ standard deviation. 
 
 ```{r, include = FALSE}
