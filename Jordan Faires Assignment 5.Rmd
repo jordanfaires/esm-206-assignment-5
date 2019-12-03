@@ -27,7 +27,6 @@ In this report, Pacific giant salamander counts and weight are compared against 
 Analyses and figures were prepared using R software version 3.6.1. 
 
 
-
 ```{r}
 
 # Load packages
@@ -52,6 +51,8 @@ mack_salamander <- mack_vertebrates %>%
 ```
 
 # Results
+
+### Results A: Annual Counts of Pacific Giant Salamander Over Time 
 
 ```{r}
 
@@ -87,7 +88,11 @@ ggplot(salamander_annual, aes(x=year, y=n, group=section, color=section)) +
 ```
 ***Figure 3.*** Annual counts of Pacific giant salamanders observed in the old growth and clear cut section of Mack Creek, 1993 - 2017. While salamander counts in old growth sections have generally been slightly greater over time, trends in populations in both sections appear to be similar. Salamander counts in the clear cut section were greater than counts in the old growth section beginning in 2015. 
 
-**Table 1.** Counts and proportions of Pacific giant salamanders observed in 2017. Counts are categorized by channel classification (pool, cascade or side channel) and stream section (clear cut or old growth).
+### Results B: Counts and Proportions of Pacific Giant Salamanders in 2017
+
+As noted above, the count of salamanders in both the old growth and clear sections has increased over time. Yet this total count includes observations of salamanders in cascades, pools and side channels within these two sections. 
+
+***Table 1.*** Counts and proportions of Pacific giant salamanders observed in 2017. Counts are categorized by channel classification (pool, cascade or side channel) and stream section (clear cut or old growth).
 ```{r}
 
 # Results B - Table of 2017 salamander counts by channel classification (pool, cascades and side-channel) in old growth (OG) and clear cut (CC) sections of Mack Creek.
@@ -127,6 +132,8 @@ chi_counts <- channel_count_table %>%
 chi_test <- chisq.test(chi_counts)
 
 ```
+
+### Results C: Salamanders in Stream Section Versus Location Within Stream 
 
 In 2017, the location of Pacific giant salamanders in the channel varied slightly based on the section of stream. Pacific giant salamanders are found slightly more in cascades in clear cut forests (n = `r channel_count_table$CC[1]`, 55.1% ) than in old growth forests (n = `r channel_count_table$OG[1]`, 44.9%), slightly less in pools in clear cut forests (n = `r channel_count_table$CC[2]`, 40.8%) than in old growth forests (n = `r channel_count_table$OG[2]`, 59.2%), and more in side channels in clear cut forests (n = `r channel_count_table$CC[3]`, 54.9%) than in old growth forests (n = `r channel_count_table$OG[3]`, 45.1%). However, there is a not significant effect of the section of stream on where Pacific giant salamanders are located (pool, cascade or side chnnel) by a Chi-square test ($\chi$^2^(`r chi_test$parameter`) = `r round(chi_test$statistic,2)`, *p* = `r round(chi_test$p.value, 2)`). 
 
@@ -257,4 +264,11 @@ While comparing the mean weight of Pacific giant salamander is useful, there are
 # Summary
 
  - Pacifc giant salamander populations in both clear cut and old growth forests have increased since data gathering began in 1993, with populations in the clear cut forest section seeming to recover over time. 
-- There is no statistical effect of stream section on where salamanders are found (pool, cascade or side channel.)
+- There is no statistical effect of stream section (clear cut or old growth) on where salamanders are found (pool, cascade or side channel), and salamander weight was not significantly different between stream sections. 
+- Mean weight of salamanders found pools was signifcantly greater than mean weight of salamanders found in side channels. However, there was no statistical difference in mean weight of salamanders in pools and cascades, and cascades and side channels. 
+
+# References
+
+Gregory S. V. 2016. Aquatic Vertebrate Population Study in Mack Creek, Andrews Experimental Forest, 1987 to present. Environmental Data Initiative. https://doi.org/10.6073/pasta/5de64af9c11579266ef20da2ff32f702. Dataset accessed 11/19/2019.
+
+
