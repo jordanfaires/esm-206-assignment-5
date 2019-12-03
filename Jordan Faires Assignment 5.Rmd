@@ -11,6 +11,14 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 # Introduction
 
+
+A short-term impact of forest clearcutting is an increase in stream temperatures. While this increased temperature can negatively impact many riparian species, Pacific giant salamander populations are relatively resilient to these short-term changes (Bury and Corn, 1988). However, Bury and Corn (1988) find that Pacific giant salamander 
+
+Murphy and Hall (1981) found that biomass of Pacific giant salamander in clearcut and old growth forest is not significantly different, but that changes in biomass across stream section is significantly correlated with changes in gradient. While the abundance of Pacifc giant salamanders can be higher in recently clear-cut areas due to temporary increases in prodctivity, these populations will stabilize between 10 and 20 years after logging (Murphy and Hall, 1981). 
+
+Thus, in Mack Creek, we would predict that Pacific giant salamander population abundance in old growth forest stands and forest that has been clearcut over 20 years ago would not be significantly different, and that the location in a stream (cascade, pool or side channel) would impact relative abundance. 
+
+
 ![](https://upload.wikimedia.org/wikipedia/commons/1/19/Dicamptodon_tenebrosus_2.JPG)
 ***Figure 1*** *Dicamptodon tenebrosus*, Pacific giant salamander Credit: Jeffrey Marsten, [Wikipedia](https://en.wikipedia.org/wiki/Pacific_giant_salamander#/media/File:Dicamptodon_tenebrosus_2.JPG)
 
@@ -263,12 +271,17 @@ While comparing the mean weight of Pacific giant salamander is useful, there are
 
 # Summary
 
- - Pacifc giant salamander populations in both clear cut and old growth forests have increased since data gathering began in 1993, with populations in the clear cut forest section seeming to recover over time. 
+ - Pacifc giant salamander populations in both clear cut and old growth forests have increased since data gathering began in 1993. This matches observations from Murphy and Hall (1981) indicating that clear cut and old growth forest sections have limited impact on relative salamander abundance, especially after 10-20 years since logging. 
 - There is no statistical effect of stream section (clear cut or old growth) on where salamanders are found (pool, cascade or side channel), and salamander weight was not significantly different between stream sections. 
-- Mean weight of salamanders found pools was signifcantly greater than mean weight of salamanders found in side channels. However, there was no statistical difference in mean weight of salamanders in pools and cascades, and cascades and side channels. 
+- Mean weight of salamanders found in pools was signifcantly greater than mean weight of salamanders found in side channels. However, there was no statistical difference in mean weight of salamanders in pools and cascades, and cascades and side channels. 
 
 # References
 
 Gregory S. V. 2016. Aquatic Vertebrate Population Study in Mack Creek, Andrews Experimental Forest, 1987 to present. Environmental Data Initiative. https://doi.org/10.6073/pasta/5de64af9c11579266ef20da2ff32f702. Dataset accessed 11/19/2019.
 
+Murphy M.L. and J.D. Hall. 1981.  Varied effects of clear-cut logging on predators and
+their habitat in small streams of the Cascade Mountains, Oregon. Can. J. Fish.
+Aquat. Sci. 38: 137-145. Accessed from: https://andrewsforest.oregonstate.edu/sites/default/files/lter/pubs/pdf/pub1931.pdf.
+
+Bury R.B. and P.S. Corn. 1988. Responses of Aquatic and Streamside Amphibians to Timber Harvest: A Review. Streamside  management:  Riparian  wildlife  and  forestry interactions, 165-181. Accessed from: https://www.researchgate.net/publication/238691284_Responses_of_Aquatic_and_Streamside_Amphibians_to_Timber_Harvest_A_Review. 
 
